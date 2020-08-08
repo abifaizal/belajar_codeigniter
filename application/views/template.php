@@ -47,7 +47,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
+      <li class="nav-item <?=$this->uri->segment(1) == '' || $this->uri->segment(1) == 'dashboard' ? 'active' : null ?>">
         <a class="nav-link" href="<?=site_url()?>">
           <i class="fas fa-fw fa-home"></i>
           <span>Home</span></a>
@@ -57,20 +57,20 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item <?php if(@$aktif_page=='user_data' || @$aktif_page=='user_tambah' || @$aktif_page=='user_edit' || @$aktif_page=='supplier_data' || @$aktif_page=='supplier_tambah' || @$aktif_page=='supplier_edit' || @$aktif_page=='customer_data') { echo 'active';} ?>">
+      <li class="nav-item <?=$this->uri->segment(1) == 'customer' || $this->uri->segment(1) == 'user' || $this->uri->segment(1) == 'supplier' ? 'active' : null ?>">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#data_master" aria-expanded="true" aria-controls="data_master">
           <i class="fas fa-fw fa-folder"></i>
           <span>Data Master</span>
         </a>
         <div id="data_master" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item <?php if(@$aktif_page=='customer_data' || @$aktif_page=='customer_tambah' || @$aktif_page=='customer_edit') { echo 'active';} ?>" href="<?=site_url('customer')?>">Customer</a>
+            <a class="collapse-item <?=$this->uri->segment(1) == 'customer' ? 'active' : null ?>" href="<?=site_url('customer')?>">Customer</a>
 
             <?php if($this->fungsi->user_login()->user_level == "Admin") { ?>
-            <a class="collapse-item <?php if(@$aktif_page=='user_data' || @$aktif_page=='user_tambah' || @$aktif_page=='user_edit') { echo 'active';} ?>" href="<?=site_url('user')?>">User</a>
+            <a class="collapse-item <?=$this->uri->segment(1) == 'user' ? 'active' : null ?>" href="<?=site_url('user')?>">User</a>
             <?php } ?>
 
-            <a class="collapse-item <?php if(@$aktif_page=='supplier_data' || @$aktif_page=='supplier_tambah' || @$aktif_page=='supplier_edit') { echo 'active';} ?>" href="<?=site_url('supplier')?>">Supplier</a>
+            <a class="collapse-item <?=$this->uri->segment(1) == 'supplier' ? 'active' : null ?>" href="<?=site_url('supplier')?>">Supplier</a>
         	</div>
         </div>
       </li>
@@ -79,16 +79,16 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item <?php if(@$aktif_menu=='category' || @$aktif_menu=='unit' || @$aktif_menu=='item') { echo 'active';} ?>">
+      <li class="nav-item <?=$this->uri->segment(1)=='category' || $this->uri->segment(1)=='unit' || $this->uri->segment(1)=='item' ? 'active' : null ?>">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#data_produk" aria-expanded="true" aria-controls="data_produk">
           <i class="fas fa-fw fa-box"></i>
           <span>Produk</span>
         </a>
         <div id="data_produk" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item <?php if(@$aktif_menu=='category') { echo 'active';} ?>" href="<?=site_url('category')?>">Category</a>
-            <a class="collapse-item <?php if(@$aktif_menu=='unit') { echo 'active';} ?>" href="<?=site_url('unit')?>">Unit</a>
-            <a class="collapse-item <?php if(@$aktif_menu=='item') { echo 'active';} ?>" href="<?=site_url('item')?>">Item</a>
+            <a class="collapse-item <?=$this->uri->segment(1) == 'category' ? 'active' : null ?>" href="<?=site_url('category')?>">Category</a>
+            <a class="collapse-item <?=$this->uri->segment(1) == 'unit' ? 'active' : null ?>" href="<?=site_url('unit')?>">Unit</a>
+            <a class="collapse-item <?=$this->uri->segment(1) == 'item' ? 'active' : null ?>" href="<?=site_url('item')?>">Item</a>
           </div>
         </div>
       </li>
