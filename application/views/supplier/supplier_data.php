@@ -19,7 +19,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Nama</th>
+            <th>Nama Supplier</th>
             <th>Kontak</th>
             <th>Alamat</th>
             <th>Opsi</th>
