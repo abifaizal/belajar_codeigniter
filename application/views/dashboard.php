@@ -1,0 +1,1 @@
+Selamat Datang <?=$this->fungsi->user_login()->user_nama?>
