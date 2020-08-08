@@ -41,7 +41,7 @@
                       <i class="fas fa-edit"></i>
                     </a>
                     <input type="hidden" name="supplier_id" value="<?=$data_supplier->supplier_id?>">
-                    <button type="submit" class="btn btn-sm btn-danger tmb-hapus" title="hapus data" onclick="return confirm('Yakin akan menghapus data ini?')">
+                    <button type="submit" class="btn btn-sm btn-danger tmb-hapus" title="hapus data" onclick="return confirm('Anda yakin akan menghapus data ini?')">
                       <i class="fas fa-trash"></i>
                     </button>
                   </form>
