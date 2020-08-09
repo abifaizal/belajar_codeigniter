@@ -14,6 +14,7 @@
   	</div>  
   </div>
   <div class="card-body">
+    <? $this->view('message') ?>
     <div class="col-lg-6 offset-lg-3">
       <form action="<?=site_url('item/proses')?>" method="post" autocomplete="off" enctype="multipart/form-data">
       	<input type="hidden" name="item_id" value="<?=$row->item_id?>">

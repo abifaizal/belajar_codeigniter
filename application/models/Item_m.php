@@ -45,5 +45,15 @@
             );
             $this->db->query($sql, $params);
         }
+
+        function check_barcode($barcode, $id = null) {
+            $this->db->from('tb_item');
+            $this->db->where('item_barcode', $barcode);
+            if($id != null) {
+                $this->db->where('item_id !=', $id);
+            }
+            $query = $this->db->get();
+            return $query;
+        }
     }
 ?>

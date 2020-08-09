@@ -74,10 +74,23 @@
         public function proses() {
         	$inputan = $this->input->post(null, TRUE);
         	if(isset($_POST['item_tambah'])) {
-        		$this->item_m->add($inputan);
+                $cek_barcode = $this->item_m->check_barcode($inputan['item_barcode']);
+                if($cek_barcode->num_rows() > 0) {
+                    $this->session->set_flashdata('error', "Barcode $inputan[item_barcode] telah digunakan barang lain");
+                    redirect('item/tambah');
+                } else {
+            		$this->item_m->add($inputan);
+                }
         	}
+
         	if(isset($_POST['item_edit'])) {
-        		$this->item_m->edit($inputan);
+                $cek_barcode = $this->item_m->check_barcode($inputan['item_barcode'], $inputan['item_id']);
+                if($cek_barcode->num_rows() > 0) {
+                    $this->session->set_flashdata('error', "Barcode $inputan[item_barcode] telah digunakan barang lain");
+                    redirect('item/edit/'.$inputan['item_id']);
+                } else {
+                    $this->item_m->edit($inputan);
+                }
         	}
 
         	if($this->db->affected_rows() > 0) {
