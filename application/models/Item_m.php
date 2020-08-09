@@ -4,6 +4,8 @@
         public function get($id = null) {
             $this->db->select('*');
             $this->db->from('tb_item');
+            $this->db->join('tb_category', 'tb_category.category_id = tb_item.category_id');
+            $this->db->join('tb_unit', 'tb_unit.unit_id = tb_item.unit_id');
             if($id != null) {
                 $this->db->where('item_id', $id);
             }

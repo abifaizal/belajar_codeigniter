@@ -45,8 +45,8 @@
                 <td><?=$nomor++?></td>
                 <td><?=$data_item->item_barcode?></td>
                 <td><?=$data_item->item_nama?></td>
-                <td><?=$data_item->category_id?></td>
-                <td><?=$data_item->unit_id?></td>
+                <td><?=$data_item->category_nama?></td>
+                <td><?=$data_item->unit_nama?></td>
                 <td><?=$data_item->item_harga?></td>
                 <td><?=$data_item->item_stok?></td>
                 <td align="center" class="td-opsi">
