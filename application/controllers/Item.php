@@ -3,7 +3,7 @@
     	function __construct() {
 			parent::__construct();
 			cek_belum_login();
-			$this->load->model('item_m');
+			$this->load->model(['item_m', 'category_m', 'unit_m']);
             $this->load->library('form_validation');
 		}
 
@@ -30,6 +30,12 @@
             $item->item_stok = null;
         	$data['row'] = $item;
 
+            $category = $this->category_m->get();
+            $data['category'] = $category;
+
+            $unit = $this->unit_m->get();
+            $data['unit'] = $unit;
+
             $this->template->load('template', 'produk/item/item_form', $data);
         }
 
@@ -41,6 +47,12 @@
         	$query = $this->item_m->get($id);
             if($query->num_rows() > 0) {
                $data['row'] = $query->row();
+
+               $category = $this->category_m->get();
+               $data['category'] = $category;
+
+               $unit = $this->unit_m->get();
+               $data['unit'] = $unit;
                $this->template->load('template', 'produk/item/item_form', $data);
             } else {
                 echo "<script>

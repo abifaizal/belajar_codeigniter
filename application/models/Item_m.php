@@ -21,18 +21,24 @@
 
         public function add($inputan) {
             $params = array(
+                'item_barcode'     => $inputan['item_barcode'],
                 'item_nama'     => $inputan['item_nama'],
-                'item_ket'      => empty($inputan['item_ket']) ? null : $inputan['item_ket'],
+                'category_id'     => $inputan['category_id'],
+                'unit_id'     => $inputan['unit_id'],
+                'item_harga'     => $inputan['item_harga'],
             );
             $this->db->insert('tb_item', $params);
         }
 
         public function edit($inputan) {
 
-            $sql = "UPDATE tb_item SET item_nama = ?, item_ket = ?, updated = NOW() WHERE item_id = ?";
+            $sql = "UPDATE tb_item SET item_barcode = ?, item_nama = ?, category_id = ?, unit_id = ?, item_harga = ?, updated = NOW() WHERE item_id = ?";
             $params = array(
+                $inputan['item_barcode'],
                 $inputan['item_nama'],
-                empty($inputan['item_ket']) ? null : $inputan['item_ket'],
+                $inputan['category_id'],
+                $inputan['unit_id'],
+                $inputan['item_harga'],
                 $inputan['item_id'],
             );
             $this->db->query($sql, $params);
