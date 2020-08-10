@@ -48,9 +48,14 @@
 
         public function del() {
             $unit_id = $this->input->post('unit_id');
-            $this->unit_m->del($unit_id);
-            if($this->db->affected_rows() > 0) {
-                $this->session->set_flashdata('success', 'Data telah terhapus');
+            $cek_item = $this->unit_m->check_item_unit($unit_id);
+            if($cek_item->num_rows() > 0) {
+                $this->session->set_flashdata('error', "Unit ini tidak dapat dihapus karena telah digunakan pada item");
+            } else {
+                $this->unit_m->del($unit_id);
+                if($this->db->affected_rows() > 0) {
+                    $this->session->set_flashdata('success', 'Data telah terhapus');
+                }
             }
             redirect('unit');
         }

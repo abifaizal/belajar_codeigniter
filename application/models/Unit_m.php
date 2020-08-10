@@ -37,5 +37,12 @@
             );
             $this->db->query($sql, $params);
         }
+
+        function check_item_unit($unit_id) {
+            $this->db->from('tb_item');
+            $this->db->where('unit_id', $unit_id);
+            $query = $this->db->get();
+            return $query;
+        }
     }
 ?>
