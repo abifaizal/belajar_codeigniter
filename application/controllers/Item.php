@@ -72,6 +72,12 @@
         }
 
         public function proses() {
+            $config['upload_path']    = './uploads/item';
+            $config['allowed_types']  = 'jpg|jpeg|png';
+            $config['max_size']       = 2048;
+            $config['file_name']      = 'item-'.date('ymd').'-'.substr(md5(rand()),0,10);
+            $this->load->library('upload', $config);
+
         	$inputan = $this->input->post(null, TRUE);
         	if(isset($_POST['item_tambah'])) {
                 $cek_barcode = $this->item_m->check_barcode($inputan['item_barcode']);
@@ -79,12 +85,6 @@
                     $this->session->set_flashdata('error', "Barcode $inputan[item_barcode] telah digunakan barang lain");
                     redirect('item/tambah');
                 } else {
-                    $config['upload_path']    = './uploads/item';
-                    $config['allowed_types']  = 'jpg|jpeg|png';
-                    $config['max_size']       = 2048;
-                    $config['file_name']      = 'item-'.date('ymd').'-'.substr(md5(rand()),0,10);
-                    $this->load->library('upload', $config);
-
                     if(@$_FILES['item_gambar']['name'] != null) {
                         if($this->upload->do_upload('item_gambar')) {
                             $inputan['item_gambar'] = $this->upload->data('file_name');
@@ -107,7 +107,26 @@
                     $this->session->set_flashdata('error', "Barcode $inputan[item_barcode] telah digunakan barang lain");
                     redirect('item/edit/'.$inputan['item_id']);
                 } else {
-                    $this->item_m->edit($inputan);
+                    if(@$_FILES['item_gambar']['name'] != null) {
+                        if($this->upload->do_upload('item_gambar')) {
+                            $gambar_lama = $this->item_m->get($inputan['item_id'])->row();
+                            if($gambar_lama->item_gambar != null) {
+                                $target_file = './uploads/item/'.$gambar_lama->item_gambar;
+                                unlink($target_file);
+                            }
+
+                            $inputan['item_gambar'] = $this->upload->data('file_name');
+                            $this->item_m->edit($inputan);
+                        } else {
+                            $error = $this->upload->display_errors();
+                            $this->session->set_flashdata('error', $error);
+                            redirect('item/edit/'.$inputan['item_id']);
+                        }
+                    } else {
+                        $inputan['item_gambar'] = null;
+                        $this->item_m->edit($inputan);
+                    }
+                    
                 }
         	}
 

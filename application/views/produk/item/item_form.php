@@ -54,7 +54,19 @@
         </div>
         <div class="form-group">
           <label for="item_gambar">Upload Gambar</label>
+          <?php 
+            if($aktif_page == 'item_edit') {
+              if($row->item_gambar != null) {
+          ?>
+                <div style="padding: 4px 8px; margin-bottom: 5px;">
+                  <img src="<?=base_url('uploads/item/'.$row->item_gambar)?>" alt="" style="width: 80px">
+                </div>
+          <?php
+              }
+            } 
+          ?>
           <input type="file" class="form-control-file form-control-sm" id="item_gambar" name="item_gambar" placeholder="pilih gambar item" value="">
+          <small><i>(biarkan kosong jika tidak <?=$aktif_page == 'item_tambah' ? 'ada' : 'diganti' ?>)</i></small>
         </div>
         <div class="form-group" style="text-align: right;">
           <button type="reset" class="btn btn-sm btn-danger" id="reset_form" name="reset_form">Reset</button>

@@ -34,17 +34,19 @@
         }
 
         public function edit($inputan) {
-
-            $sql = "UPDATE tb_item SET item_barcode = ?, item_nama = ?, category_id = ?, unit_id = ?, item_harga = ?, updated = NOW() WHERE item_id = ?";
             $params = array(
-                $inputan['item_barcode'],
-                $inputan['item_nama'],
-                $inputan['category_id'],
-                $inputan['unit_id'],
-                $inputan['item_harga'],
-                $inputan['item_id'],
+                'item_barcode'     => $inputan['item_barcode'],
+                'item_nama'        => $inputan['item_nama'],
+                'category_id'      => $inputan['category_id'],
+                'unit_id'          => $inputan['unit_id'],
+                'item_harga'       => $inputan['item_harga'],
+                'updated'          => date('Y-m-d H:i:s'),
             );
-            $this->db->query($sql, $params);
+            if($inputan['item_gambar'] != null) {
+                $params['item_gambar'] = $inputan['item_gambar'];
+            }
+            $this->db->where('item_id', $inputan['item_id']);
+            $this->db->update('tb_item', $params);
         }
 
         function check_barcode($barcode, $id = null) {
