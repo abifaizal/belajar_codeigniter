@@ -48,9 +48,14 @@
 
         public function del() {
             $category_id = $this->input->post('category_id');
-            $this->category_m->del($category_id);
-            if($this->db->affected_rows() > 0) {
-                $this->session->set_flashdata('success', 'Data telah terhapus');
+            $cek_item = $this->category_m->check_item_category($category_id);
+            if($cek_item->num_rows() > 0) {
+                $this->session->set_flashdata('error', "Category ini tidak dapat dihapus karena telah digunakan pada item");
+            } else {
+                $this->category_m->del($category_id);
+                if($this->db->affected_rows() > 0) {
+                    $this->session->set_flashdata('success', 'Data telah terhapus');
+                }
             }
             redirect('category');
         }

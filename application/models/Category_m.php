@@ -37,5 +37,12 @@
             );
             $this->db->query($sql, $params);
         }
+
+        function check_item_category($category_id) {
+            $this->db->from('tb_item');
+            $this->db->where('category_id', $category_id);
+            $query = $this->db->get();
+            return $query;
+        }
     }
 ?>
