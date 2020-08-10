@@ -64,6 +64,11 @@
 
         public function del() {
             $item_id = $this->input->post('item_id');
+            $gambar_lama = $this->item_m->get($item_id)->row();
+            if($gambar_lama->item_gambar != null) {
+                $target_file = './uploads/item/'.$gambar_lama->item_gambar;
+                unlink($target_file);
+            }
             $this->item_m->del($item_id);
             if($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('success', 'Data telah terhapus');
