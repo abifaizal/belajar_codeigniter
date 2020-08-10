@@ -26,6 +26,7 @@
             <th>Unit</th>
             <th>Harga</th>
             <th>Stok</th>
+            <th>Gambar</th>
             <th>Opsi</th>
           </tr>
         </thead>
@@ -42,6 +43,11 @@
                 <td><?=$data_item->unit_nama?></td>
                 <td><?=$data_item->item_harga?></td>
                 <td><?=$data_item->item_stok?></td>
+                <td>
+                  <?php if($data_item->item_gambar != null) { ?>
+                    <img src="<?=base_url('uploads/item/'.$data_item->item_gambar)?>" alt="" style="width: 50px">
+                  <?php } else { echo "<i>(kosong)</i>";} ?>
+                </td>
                 <td align="center" class="td-opsi">
                   <form action="<?=site_url('item/del')?>" method="post">
                     <a href="<?=site_url('item/edit/'.$data_item->item_id)?>" class="btn btn-sm btn-info tmb_edit" title="edit data">

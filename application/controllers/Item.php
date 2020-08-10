@@ -82,17 +82,13 @@
                     $config['upload_path']    = './uploads/item';
                     $config['allowed_types']  = 'jpg|jpeg|png';
                     $config['max_size']       = 2048;
-                    $config['file_name']      = 'item-'.date(ymd).'-'.substr(md5(rand()),0,10);
+                    $config['file_name']      = 'item-'.date('ymd').'-'.substr(md5(rand()),0,10);
                     $this->load->library('upload', $config);
 
                     if(@$_FILES['item_gambar']['name'] != null) {
                         if($this->upload->do_upload('item_gambar')) {
                             $inputan['item_gambar'] = $this->upload->data('file_name');
                             $this->item_m->add($inputan);
-                            if($this->db->affected_rows() > 0) {
-                                $this->session->set_flashdata('success', 'Data telah tersimpan');
-                            }
-                            redirect('item');
                         } else {
                             $error = $this->upload->display_errors();
                             $this->session->set_flashdata('error', $error);
@@ -101,9 +97,6 @@
                     } else {
                         $inputan['item_gambar'] = null;
                         $this->item_m->add($inputan);
-                        if($this->db->affected_rows() > 0) {
-                            $this->session->set_flashdata('success', 'Data telah tersimpan');
-                        }
                     }
                 }
         	}
@@ -115,17 +108,13 @@
                     redirect('item/edit/'.$inputan['item_id']);
                 } else {
                     $this->item_m->edit($inputan);
-                    if($this->db->affected_rows() > 0) {
-                        $this->session->set_flashdata('success', 'Data telah tersimpan');
-                    }
-                    redirect('item');
                 }
         	}
 
-        	// if($this->db->affected_rows() > 0) {
-         //        $this->session->set_flashdata('success', 'Data telah tersimpan');
-         //    }
-         //    redirect('item');
+        	if($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success', 'Data telah tersimpan');
+            }
+            redirect('item');
         }
     }
 ?>
