@@ -1,6 +1,6 @@
 <?php if($this->session->has_userdata('success')) { ?>
 	<div class="alert alert-success alert-dismissible fade show" role="alert">
-	  <strong><i class="fas fa-check"></i> Berhasil !</strong> <?=$_SESSION['success']?>
+	  <strong><i class="fas fa-check"></i> Berhasil !</strong> <?=$this->session->flashdata('success')?>
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 	    <span aria-hidden="true">&times;</span>
 	  </button>
@@ -9,7 +9,7 @@
 
 <?php if($this->session->has_userdata('error')) { ?>
 	<div class="alert alert-danger alert-dismissible fade show" role="alert">
-	  <strong><i class="fas fa-ban"></i> Gagal !</strong> <?=$_SESSION['error']?>
+	  <strong><i class="fas fa-ban"></i> Gagal !</strong> <?=strip_tags(str_replace('<p>', '', $this->session->flashdata('error')))?>
 	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 	    <span aria-hidden="true">&times;</span>
 	  </button>
