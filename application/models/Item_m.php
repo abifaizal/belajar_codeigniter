@@ -24,10 +24,11 @@
         public function add($inputan) {
             $params = array(
                 'item_barcode'     => $inputan['item_barcode'],
-                'item_nama'     => $inputan['item_nama'],
-                'category_id'     => $inputan['category_id'],
-                'unit_id'     => $inputan['unit_id'],
-                'item_harga'     => $inputan['item_harga'],
+                'item_nama'        => $inputan['item_nama'],
+                'category_id'      => $inputan['category_id'],
+                'unit_id'          => $inputan['unit_id'],
+                'item_harga'       => $inputan['item_harga'],
+                'item_gambar'      => $inputan['item_gambar'],
             );
             $this->db->insert('tb_item', $params);
         }

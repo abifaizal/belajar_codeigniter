@@ -19,15 +19,15 @@
       <form action="<?=site_url('item/proses')?>" method="post" autocomplete="off" enctype="multipart/form-data">
       	<input type="hidden" name="item_id" value="<?=$row->item_id?>">
         <div class="form-group">
-          <label for="item_barcode">Barcode item</label>
+          <label for="item_barcode">Barcode item*</label>
           <input type="text" class="form-control form-control-sm" id="item_barcode" name="item_barcode" placeholder="masukkan barcode item" value="<?=$row->item_barcode?>" required>
         </div>
         <div class="form-group">
-          <label for="item_nama">Nama item</label>
+          <label for="item_nama">Nama item*</label>
           <input type="text" class="form-control form-control-sm" id="item_nama" name="item_nama" placeholder="masukkan nama item" value="<?=$row->item_nama?>" required>
         </div>
         <div class="form-group">
-          <label for="category_id">Category Item</label>
+          <label for="category_id">Category Item*</label>
           <select class="form-control form-control-sm" name="category_id" id="category_id" required>
             <option value="">- pilih -</option>
             <?php foreach ($category->result() as $key => $d_cat) { ?>
@@ -38,7 +38,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="unit_id">Unit Item</label>
+          <label for="unit_id">Unit Item*</label>
           <select class="form-control form-control-sm" name="unit_id" id="unit_id" required>
             <option value="">- pilih -</option>
             <?php foreach ($unit->result() as $key => $d_unit) { ?>
@@ -49,8 +49,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="item_harga">Harga Item</label>
+          <label for="item_harga">Harga Item*</label>
           <input type="number" class="form-control form-control-sm" id="item_harga" name="item_harga" placeholder="masukkan harga item" value="<?=$row->item_harga?>" required>
+        </div>
+        <div class="form-group">
+          <label for="item_gambar">Upload Gambar</label>
+          <input type="file" class="form-control-file form-control-sm" id="item_gambar" name="item_gambar" placeholder="pilih gambar item" value="">
         </div>
         <div class="form-group" style="text-align: right;">
           <button type="reset" class="btn btn-sm btn-danger" id="reset_form" name="reset_form">Reset</button>
