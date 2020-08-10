@@ -115,6 +115,10 @@
                     redirect('item/edit/'.$inputan['item_id']);
                 } else {
                     $this->item_m->edit($inputan);
+                    if($this->db->affected_rows() > 0) {
+                        $this->session->set_flashdata('success', 'Data telah tersimpan');
+                    }
+                    redirect('item');
                 }
         	}
 
