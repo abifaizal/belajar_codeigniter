@@ -19,13 +19,58 @@
       <form action="<?=site_url('stock/stock_in_proses')?>" method="post" autocomplete="off" enctype="multipart/form-data">
       	<div class="form-group">
           <label for="supplier_id">Supplier*</label>
-          <input type="text" class="form-control form-control-sm" id="supplier_id" name="supplier_id" placeholder="pilih supplier" value="" required>
+          <select class="form-control form-control-sm" name="supplier_id" id="supplier_id" required>
+            <option value="">- pilih -</option>
+            <?php foreach ($supplier->result() as $key => $d_supplier) { ?>
+              <option value="<?=$d_supplier->supplier_id?>" >
+                <?=$d_supplier->supplier_nama?>
+              </option>
+            <?php } ?>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="item_id">Item*</label>
+          <div class="input-group input-group-sm">
+	        <input type="text" class="form-control" id="item_id" name="item_id" placeholder="pilih item" value="" required>
+	        <div class="input-group-append">
+	        	<button class="btn btn-dark" type="button" id="tmb_cari_item" data-toggle="modal" data-target="#modal_daftar_item"><i class="fas fa-search"></i></button>
+	        </div>
+	      </div>
+        </div>
+        <div class="form-group">
+          <label for="stock_qty">Qty*</label>
+          <input type="text" class="form-control form-control-sm" id="stock_qty" name="stock_qty" placeholder="masukkan jumlah item" value="" required>
+        </div>
+        <div class="form-group">
+          <label for="stock_detail">Detail</label> <small>(biarkan kosong jika tidak diperlukan)</small>
+          <textarea class="form-control form-control-sm" id="stock_detail" name="stock_detail" placeholder="masukkan detail/keterangan stock in"></textarea>
         </div>
         <div class="form-group" style="text-align: right;">
           <button type="reset" class="btn btn-sm btn-danger" id="reset_form" name="reset_form">Reset</button>
           <input type="submit" class="btn btn-sm btn-primary" id="<?=$aktif_page?>" name="<?=$aktif_page?>" value="Simpan">
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cari Item -->
+<div class="modal fade" id="modal_daftar_item" tabindex="-1" aria-labelledby="modal_daftar_itemLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_daftar_itemLabel">Daftar Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary btn-sm">Save changes</button> -->
+      </div>
     </div>
   </div>
 </div>
