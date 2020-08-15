@@ -96,27 +96,22 @@
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
-      <!-- Heading -->
-      <div class="sidebar-heading mt-3">
-        Transaksi
-      </div>
-
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item <?=$this->uri->segment(1)=='penjualan' || $this->uri->segment(1)=='stock' ? 'active' : null ?>">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#penjualan_collapse" aria-expanded="true" aria-controls="penjualan_collapse">
           <i class="fas fa-fw fa-money-bill-wave"></i>
-          <span>Penjualan</span>
+          <span>Transaksi</span>
         </a>
         <div id="penjualan_collapse" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="#">
-            	Data Penjualan
+            	Penjualan
+            </a>
+            <a class="collapse-item <?=$this->uri->segment(1)=='stock' && $this->uri->segment(2)=='in' ? 'active' : null ?>" href="<?=site_url('stock/in')?>">
+            	Stock In
             </a>
             <a class="collapse-item" href="#">
-            	Transaksi Penjualan
-            </a>
-            <a class="collapse-item" href="#">
-            	Laporan Penjualan
+            	Stock Out
             </a>
         	</div>
         </div>
