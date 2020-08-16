@@ -1,10 +1,10 @@
-<h1 class="h3 mb-2 text-gray-800 judul-halaman"><i class="fas fa-box"></i> Halaman <?=$aktif_page == 'stock_tambah' ? 'Tambah' : 'Edit' ?> Data Stock In</h1>
+<h1 class="h3 mb-2 text-gray-800 judul-halaman"><i class="fas fa-box"></i> Halaman Tambah Data Stock In</h1>
 
 <div class="card shadow mb-4">
   <div class="card-header py-3">
   	<div class="row">
   		<div class="col-md-6">
-  			<h6 class="font-weight-bold text-primary">Form <?=$aktif_page == 'stock_tambah' ? 'Tambah' : 'Edit' ?> Data Stock In</h6>
+  			<h6 class="font-weight-bold text-primary">Form Tambah Data Stock In</h6>
   		</div>
   		<div class="col-md-6" style="text-align: right;">
   			<a href="<?=site_url('stock/in')?>">
@@ -16,7 +16,7 @@
   <div class="card-body">
     <? $this->view('message') ?>
     <div class="col-lg-6 offset-lg-3">
-      <form action="<?=site_url('stock/stock_in_proses')?>" method="post" autocomplete="off" enctype="multipart/form-data">
+      <form action="<?=site_url('stock/proses')?>" method="post" autocomplete="off" enctype="multipart/form-data">
       	<div class="form-group">
           <label for="supplier_id">Supplier*</label>
           <select class="form-control form-control-sm" name="supplier_id" id="supplier_id" required>
@@ -31,15 +31,24 @@
         <div class="form-group">
           <label for="item_id">Item*</label>
           <div class="input-group input-group-sm">
-	        <input type="text" class="form-control" id="item_id" name="item_id" placeholder="pilih item" value="" required>
+	        <input type="text" class="form-control" id="item_id" name="item_id" placeholder="masukkan barcode / pilih item" value="" required>
 	        <div class="input-group-append">
 	        	<button class="btn btn-dark" type="button" id="tmb_cari_item" data-toggle="modal" data-target="#modal_daftar_item"><i class="fas fa-search"></i></button>
 	        </div>
 	      </div>
         </div>
         <div class="form-group">
+          <label for="item_name">Nama Item</label>
+          <input type="text" class="form-control form-control-sm" id="item_name" name="item_name" placeholder="nama item terpilih" value="" readonly>
+        </div>
+        <div class="form-group">
           <label for="stock_qty">Qty*</label>
-          <input type="text" class="form-control form-control-sm" id="stock_qty" name="stock_qty" placeholder="masukkan jumlah item" value="" required>
+          <div class="input-group input-group-sm">
+          	<input type="text" class="form-control" id="stock_qty" name="stock_qty" placeholder="masukkan jumlah item" value="" required>
+          	<div class="input-group-append">
+	        	<span class="input-group-text" id="unit_item">Unit</span>
+	        </div>
+          </div>
         </div>
         <div class="form-group">
           <label for="stock_detail">Detail</label> <small>(biarkan kosong jika tidak diperlukan)</small>
@@ -47,7 +56,7 @@
         </div>
         <div class="form-group" style="text-align: right;">
           <button type="reset" class="btn btn-sm btn-danger" id="reset_form" name="reset_form">Reset</button>
-          <input type="submit" class="btn btn-sm btn-primary" id="<?=$aktif_page?>" name="<?=$aktif_page?>" value="Simpan">
+          <input type="submit" class="btn btn-sm btn-primary" id="submit_stock_in" name="submit_stock_in" value="Simpan">
         </div>
       </form>
     </div>

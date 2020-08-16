@@ -19,5 +19,9 @@
             $data['supplier'] = $supplier;
             $this->template->load('template', 'transaksi/stock_in/stock_in_form.php', $data);
 		}
+
+		public function proses() {
+			
+		}
 	}
  ?>
