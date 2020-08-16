@@ -41,7 +41,7 @@
                 <td><?=$data_item->item_nama?></td>
                 <td><?=$data_item->category_nama?></td>
                 <td><?=$data_item->unit_nama?></td>
-                <td><?=$data_item->item_harga?></td>
+                <td><?=nominal_indo($data_item->item_harga)?></td>
                 <td><?=$data_item->item_stok?></td>
                 <td>
                   <?php if($data_item->item_gambar != null) { ?>

@@ -29,24 +29,25 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="item_id">Item*</label>
+          <label for="item_barcode">Barcode Item*</label>
           <div class="input-group input-group-sm">
-	        <input type="text" class="form-control" id="item_id" name="item_id" placeholder="masukkan barcode / pilih item" value="" required>
+	        <input type="text" class="form-control" id="item_barcode" name="item_barcode" placeholder="masukkan barcode / klik tombol cari" value="" required>
 	        <div class="input-group-append">
 	        	<button class="btn btn-dark" type="button" id="tmb_cari_item" data-toggle="modal" data-target="#modal_daftar_item"><i class="fas fa-search"></i></button>
 	        </div>
 	      </div>
         </div>
         <div class="form-group">
-          <label for="item_name">Nama Item</label>
-          <input type="text" class="form-control form-control-sm" id="item_name" name="item_name" placeholder="nama item terpilih" value="" readonly>
+          <label for="item_nama">Nama Item</label>
+          <input type="text" class="form-control form-control-sm" id="item_nama" name="item_nama" placeholder="nama item terpilih" value="" readonly>
+          <input type="hidden" name="item_id" id="item_id">
         </div>
         <div class="form-group">
           <label for="stock_qty">Qty*</label>
           <div class="input-group input-group-sm">
-          	<input type="text" class="form-control" id="stock_qty" name="stock_qty" placeholder="masukkan jumlah item" value="" required>
+          	<input type="number" class="form-control" id="stock_qty" name="stock_qty" placeholder="masukkan jumlah item" value="" required>
           	<div class="input-group-append">
-	        	<span class="input-group-text" id="unit_item">Unit</span>
+	        	<span class="input-group-text" id="unit_nama">Unit</span>
 	        </div>
           </div>
         </div>
@@ -69,17 +70,70 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal_daftar_itemLabel">Daftar Item</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" id="modal_close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="table-responsive">
+        	<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        <thead>
+		          <tr>
+		            <th>#</th>
+		            <th>Barcode</th>
+		            <th>Nama item</th>
+		            <th>Kategori</th>
+		            <th>Unit</th>
+		            <th>Stok</th>
+		            <th>Opsi</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+							<?php 
+		            $nomor = 1;
+		            foreach ($item->result() as $key => $data_item) {
+		          ?>
+		              <tr>
+		                <td><?=$nomor++?></td>
+		                <td><?=$data_item->item_barcode?></td>
+		                <td><?=$data_item->item_nama?></td>
+		                <td><?=$data_item->category_nama?></td>
+		                <td><?=$data_item->unit_nama?></td>
+		                <td><?=$data_item->item_stok?></td>
+		                <td align="center" class="td-opsi">
+	                    <button type="button" class="btn btn-sm btn-primary tmb_pilih_item" title="pilih item"
+												data-item_id = "<?=$data_item->item_id?>"
+												data-item_barcode = "<?=$data_item->item_barcode?>"
+												data-item_nama = "<?=$data_item->item_nama?>"
+												data-unit_nama = "<?=$data_item->unit_nama?>"
+	                    >
+	                      pilih
+	                    </button>
+		                </td>
+		              </tr>
+		          <?php } ?>
+		        </tbody>
+		      </table>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-primary btn-sm">Save changes</button> -->
       </div>
     </div>
   </div>
 </div>
+
+<script>
+	$(".tmb_pilih_item").click(function() {
+		var item_id = $(this).data('item_id');
+		var item_barcode = $(this).data('item_barcode');
+		var item_nama = $(this).data('item_nama');
+		var unit_nama = $(this).data('unit_nama');
+		$("#item_id").val(item_id);
+		$("#item_barcode").val(item_barcode);
+		$("#item_nama").val(item_nama);
+		$("#unit_nama").text(unit_nama);
+
+		$("#modal_close").click();
+	})
+</script>

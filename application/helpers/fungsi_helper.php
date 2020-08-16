@@ -22,4 +22,9 @@
 			redirect('dashboard');
 		}
 	}
+
+	function nominal_indo($nominal) {
+		$result = "Rp" . number_format($nominal);
+		return $result;
+	}
  ?>
