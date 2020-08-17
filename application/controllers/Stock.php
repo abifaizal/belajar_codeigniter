@@ -9,6 +9,8 @@
 		public function stock_in_data() {
 			$data['header'] = 'Data stock masuk';
         	$data['aktif_page'] = 'stock_in_data';
+        	$daftar_stock_in = $this->stock_m->get_stock_in();
+        	$data['stock_in'] = $daftar_stock_in;
             $this->template->load('template', 'transaksi/stock_in/stock_in_data.php', $data);
 		}
 

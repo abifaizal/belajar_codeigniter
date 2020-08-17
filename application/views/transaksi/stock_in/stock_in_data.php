@@ -29,7 +29,29 @@
           </tr>
         </thead>
         <tbody>
-
+          <?php 
+            $nomor = 1;
+            foreach ($stock_in->result() as $key => $data) {
+          ?>
+              <tr>
+                <td><?=$nomor++?></td>
+                <td><?=$data->stock_tanggal?></td>
+                <td><?=$data->item_nama?></td>
+                <td><?=$data->stock_qty?></td>
+                <td><?=$data->supplier_nama?></td>
+                <td><?=$data->user_nama?></td>
+                <td class="td-opsi" align="center">
+                  <button class="btn btn-sm btn-info tmb_detail" title="detail">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger tmb_hapus" title="hapus">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+          <?php
+            }
+          ?>
         </tbody>
       </table>
     </div>

@@ -1,15 +1,14 @@
 <?php
     class Stock_m extends CI_Model {
 
-        public function get($id = null) {
+        public function get_stock_in() {
             $this->db->select('*');
             $this->db->from('tb_stock');
-            if($id != null) {
-                $this->db->where('stock_id', $id);
-            }
-            else {
-                $this->db->order_by('stock_nama ASC');
-            }
+            $this->db->join('tb_item', 'tb_stock.item_id = tb_item.item_id');
+            $this->db->join('tb_supplier', 'tb_stock.supplier_id = tb_supplier.supplier_id');
+            $this->db->join('tb_user', 'tb_stock.user_id = tb_user.user_id');
+            $this->db->where('stock_type', 'Masuk');
+            $this->db->order_by('stock_tanggal ASC');
             $query = $this->db->get();
             return $query; 
         }
