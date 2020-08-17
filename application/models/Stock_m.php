@@ -5,7 +5,8 @@
             $this->db->select('*');
             $this->db->from('tb_stock');
             $this->db->join('tb_item', 'tb_stock.item_id = tb_item.item_id');
-            $this->db->join('tb_supplier', 'tb_stock.supplier_id = tb_supplier.supplier_id');
+            $this->db->join('tb_unit', 'tb_item.unit_id = tb_unit.unit_id');
+            $this->db->join('tb_supplier', 'tb_stock.supplier_id = tb_supplier.supplier_id', 'left');
             $this->db->join('tb_user', 'tb_stock.user_id = tb_user.user_id');
             $this->db->where('stock_type', 'Masuk');
             $this->db->order_by('stock_tanggal ASC');
