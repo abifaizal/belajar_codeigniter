@@ -58,5 +58,11 @@
             $query = $this->db->get();
             return $query;
         }
+
+        function update_stock_in($inputan) {
+            $this->db->set('item_stok', 'item_stok + '.$inputan['stock_qty'], FALSE);
+            $this->db->where('item_id', $inputan['item_id']);
+            $this->db->update('tb_item');
+        }
     }
 ?>
