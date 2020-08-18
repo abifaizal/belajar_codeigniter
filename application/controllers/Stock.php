@@ -41,5 +41,21 @@
         		$this->stock_m->add_stock_out($inputan);
         	}
 		}
+
+		public function stock_in_del() {
+			$stock_id = $this->input->post('stock_id');
+			$row = $this->stock_m->get($stock_id)->row();
+			$item_id = $row->item_id;
+			$stock_qty = $row->stock_qty;
+			$inputan = array('item_id' => $item_id, 'stock_qty' => $stock_qty);
+
+			$this->item_m->update_stock_out($inputan);
+			$this->stock_m->del($stock_id);
+
+			if($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('success', 'Data telah terhapus');
+            }
+			redirect('stock/in');
+		}
 	}
  ?>

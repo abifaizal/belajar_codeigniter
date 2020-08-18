@@ -24,7 +24,6 @@
             <th>Item</th>
             <th>Qty</th>
             <th>Supplier</th>
-            <th>User</th>
             <th>Opsi</th>
           </tr>
         </thead>
@@ -39,23 +38,25 @@
                 <td><?=$data->item_nama?></td>
                 <td><?=$data->stock_qty?></td>
                 <td><?=$data->supplier_nama?></td>
-                <td><?=$data->user_nama?></td>
                 <td class="td-opsi" align="center">
-                  <button class="btn btn-sm btn-info tmb_detail" title="detail" data-toggle="modal" data-target="#modal_detail"
-                    data-stock_tanggal = "<?=$data->stock_tanggal?>"
-                    data-item_barcode = "<?=$data->item_barcode?>"
-                    data-item_nama = "<?=$data->item_nama?>"
-                    data-stock_qty = "<?=$data->stock_qty?>"
-                    data-unit_nama = "<?=$data->unit_nama?>"
-                    data-supplier_nama = "<?=$data->supplier_nama?>"
-                    data-stock_detail = "<?=$data->stock_detail == null ? '-' : $data->stock_detail?>"
-                    data-user_nama = "<?=$data->user_nama?>"
-                  >
-                    <i class="fas fa-eye"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger tmb_hapus" title="hapus">
-                    <i class="fas fa-trash"></i>
-                  </button>
+                  <form action="<?=site_url('stock/in/del')?>" method="post">
+                    <button type="button" class="btn btn-sm btn-info tmb_detail" title="detail" data-toggle="modal" data-target="#modal_detail"
+                      data-stock_tanggal = "<?=$data->stock_tanggal?>"
+                      data-item_barcode = "<?=$data->item_barcode?>"
+                      data-item_nama = "<?=$data->item_nama?>"
+                      data-stock_qty = "<?=$data->stock_qty?>"
+                      data-unit_nama = "<?=$data->unit_nama?>"
+                      data-supplier_nama = "<?=$data->supplier_nama?>"
+                      data-stock_detail = "<?=$data->stock_detail == null ? '-' : $data->stock_detail?>"
+                      data-user_nama = "<?=$data->user_nama?>"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <input type="hidden" name="stock_id" value="<?=$data->stock_id?>">
+                    <button type="submit" class="btn btn-sm btn-danger tmb-hapus" title="hapus data" onclick="return confirm('Anda yakin akan menghapus data ini?')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                  </form>
                 </td>
               </tr>
           <?php

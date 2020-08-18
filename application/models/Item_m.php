@@ -64,5 +64,11 @@
             $this->db->where('item_id', $inputan['item_id']);
             $this->db->update('tb_item');
         }
+
+        function update_stock_out($inputan) {
+            $this->db->set('item_stok', 'item_stok - '.$inputan['stock_qty'], FALSE);
+            $this->db->where('item_id', $inputan['item_id']);
+            $this->db->update('tb_item');
+        }
     }
 ?>
