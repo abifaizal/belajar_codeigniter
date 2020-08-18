@@ -1,13 +1,16 @@
 <?php
     class item_m extends CI_Model {
 
-        public function get($id = null) {
+        public function get($id = null, $stock_type = null) {
             $this->db->select('*');
             $this->db->from('tb_item');
             $this->db->join('tb_category', 'tb_category.category_id = tb_item.category_id');
             $this->db->join('tb_unit', 'tb_unit.unit_id = tb_item.unit_id');
             if($id != null) {
                 $this->db->where('item_id', $id);
+            }
+            if($stock_type != null && $stock_type == 'stock_out') {
+                $this->db->where('item_stok > 0');
             }
             else {
                 $this->db->order_by('item_nama ASC');

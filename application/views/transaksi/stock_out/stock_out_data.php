@@ -1,13 +1,13 @@
-<h1 class="h3 mb-2 text-gray-800 judul-halaman"><i class="fas fa-folder-plus"></i> Halaman Riwayat Stock In</h1>
+<h1 class="h3 mb-2 text-gray-800 judul-halaman"><i class="fas fa-folder-minus"></i> Halaman Riwayat Stock Out</h1>
 
 <div class="card shadow mb-4">
   <div class="card-header py-3">
   	<div class="row">
   		<div class="col-md-6">
-  			<h6 class="font-weight-bold text-primary">Tabel Riwayat Stock In</h6>
+  			<h6 class="font-weight-bold text-primary">Tabel Riwayat Stock Out</h6>
   		</div>
   		<div class="col-md-6" style="text-align: right;">
-  			<a href="<?=site_url('stock/in/add')?>">
+  			<a href="<?=site_url('stock/out/add')?>">
   				<button class="btn btn-sm btn-dark">Tambah Data +</button>
   			</a>
   		</div>
@@ -23,33 +23,29 @@
             <th>Tanggal</th>
             <th>Item</th>
             <th>Qty</th>
-            <th>Supplier</th>
             <th>Opsi</th>
           </tr>
         </thead>
         <tbody>
           <?php 
             $nomor = 1;
-            foreach ($stock_in->result() as $key => $data) {
+            foreach ($stock_out->result() as $key => $data) {
           ?>
               <tr>
                 <td><?=$nomor++?></td>
                 <td>
-                  <?//=$data->stock_tanggal?>
                   <?=date_format(date_create($data->stock_tanggal), 'd  M  Y')?>
                 </td>
                 <td><?=$data->item_nama?></td>
                 <td><?=$data->stock_qty?></td>
-                <td><?=$data->supplier_nama?></td>
                 <td class="td-opsi" align="center">
-                  <form action="<?=site_url('stock/in/del')?>" method="post">
+                  <form action="<?=site_url('stock/out/del')?>" method="post">
                     <button type="button" class="btn btn-sm btn-info tmb_detail" title="detail" data-toggle="modal" data-target="#modal_detail"
                       data-stock_tanggal = "<?=$data->stock_tanggal?>"
                       data-item_barcode = "<?=$data->item_barcode?>"
                       data-item_nama = "<?=$data->item_nama?>"
                       data-stock_qty = "<?=$data->stock_qty?>"
                       data-unit_nama = "<?=$data->unit_nama?>"
-                      data-supplier_nama = "<?=$data->supplier_nama?>"
                       data-stock_detail = "<?=$data->stock_detail == null ? '-' : $data->stock_detail?>"
                       data-user_nama = "<?=$data->user_nama?>"
                     >
@@ -96,10 +92,6 @@
             <td id="dt_stock_tanggal">10 Oktober 2020</td>
           </tr>
           <tr>
-            <th>Supplier</th>
-            <td id="dt_supplier_nama">PT Kapal Api Indonesia</td>
-          </tr>
-          <tr>
             <th>Barcode Item</th>
             <td id="dt_item_barcode">2019023348</td>
           </tr>
@@ -135,14 +127,12 @@
     var item_nama = $(this).data('item_nama');
     var stock_qty = $(this).data('stock_qty');
     var unit_nama = $(this).data('unit_nama');
-    var supplier_nama = $(this).data('supplier_nama');
     var stock_detail = $(this).data('stock_detail');
     var user_nama = $(this).data('user_nama');
     $("#dt_stock_tanggal").text(stock_tanggal);
     $("#dt_item_barcode").text(item_barcode);
     $("#dt_item_nama").text(item_nama);
     $("#dt_stock_qty_unit").text(stock_qty+" "+unit_nama);
-    $("#dt_supplier_nama").text(supplier_nama);
     $("#dt_stock_detail").text(stock_detail);
     $("#dt_user_nama").text(user_nama);
   })

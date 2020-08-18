@@ -1,14 +1,14 @@
-<h1 class="h3 mb-2 text-gray-800 judul-halaman"><i class="fas fa-folder-plus"></i> Halaman Tambah Data Stock In</h1>
+<h1 class="h3 mb-2 text-gray-800 judul-halaman"><i class="fas fa-folder-minus"></i> Halaman Tambah Data Stock Out</h1>
 
 <div class="card shadow mb-4">
   <div class="card-header py-3">
   	<div class="row">
   		<div class="col-md-6">
-  			<h6 class="font-weight-bold text-primary">Form Tambah Data Stock In</h6>
+  			<h6 class="font-weight-bold text-primary">Form Tambah Data Stock Out</h6>
   		</div>
   		<div class="col-md-6" style="text-align: right;">
-  			<a href="<?=site_url('stock/in')?>">
-  				<button class="btn btn-sm btn-dark">Riwayat Stock In</button>
+  			<a href="<?=site_url('stock/out')?>">
+  				<button class="btn btn-sm btn-dark">Riwayat Stock Out</button>
   			</a>
   		</div>
   	</div>  
@@ -17,17 +17,6 @@
     <? $this->view('message') ?>
     <div class="col-lg-6 offset-lg-3">
       <form action="<?=site_url('stock/proses')?>" method="post" autocomplete="off" enctype="multipart/form-data">
-      	<div class="form-group">
-          <label for="supplier_id">Supplier*</label>
-          <select class="form-control form-control-sm" name="supplier_id" id="supplier_id" required>
-            <option value="">- pilih -</option>
-            <?php foreach ($supplier->result() as $key => $d_supplier) { ?>
-              <option value="<?=$d_supplier->supplier_id?>" >
-                <?=$d_supplier->supplier_nama?>
-              </option>
-            <?php } ?>
-          </select>
-        </div>
         <div class="form-group">
           <label for="item_barcode">Barcode Item*</label>
           <div class="input-group input-group-sm">
@@ -53,11 +42,11 @@
         </div>
         <div class="form-group">
           <label for="stock_detail">Detail</label> <small>(biarkan kosong jika tidak diperlukan)</small>
-          <textarea class="form-control form-control-sm" id="stock_detail" name="stock_detail" placeholder="masukkan detail/keterangan stock in"></textarea>
+          <textarea class="form-control form-control-sm" id="stock_detail" name="stock_detail" placeholder="cth : kadaluarsa, rusak, dll"></textarea>
         </div>
         <div class="form-group" style="text-align: right;">
           <button type="reset" class="btn btn-sm btn-danger" id="reset_form" name="reset_form">Reset</button>
-          <input type="submit" class="btn btn-sm btn-primary" id="submit_stock_in" name="submit_stock_in" value="Simpan">
+          <input type="submit" class="btn btn-sm btn-primary" id="submit_stock_out" name="submit_stock_out" value="Simpan">
         </div>
       </form>
     </div>

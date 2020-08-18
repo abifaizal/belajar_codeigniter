@@ -110,7 +110,7 @@
             <a class="collapse-item <?=$this->uri->segment(1)=='stock' && $this->uri->segment(2)=='in' ? 'active' : null ?>" href="<?=site_url('stock/in')?>">
             	Stock In
             </a>
-            <a class="collapse-item" href="#">
+            <a class="collapse-item <?=$this->uri->segment(1)=='stock' && $this->uri->segment(2)=='out' ? 'active' : null ?>" href="<?=site_url('stock/out')?>">
             	Stock Out
             </a>
         	</div>
