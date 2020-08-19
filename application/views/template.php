@@ -27,13 +27,13 @@
   <link href="<?=base_url()?>asset/sweetalert/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
-<body id="page-top">
+<body id="page-top" class="<?=$this->uri->segment(1) == 'sale' ? 'sidebar-toggled' : null ?>">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion <?=$this->uri->segment(1) == 'sale' ? 'toggled' : null ?>" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?=site_url()?>">
@@ -97,14 +97,14 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item <?=$this->uri->segment(1)=='penjualan' || $this->uri->segment(1)=='stock' ? 'active' : null ?>">
+      <li class="nav-item <?=$this->uri->segment(1)=='sale' || $this->uri->segment(1)=='stock' ? 'active' : null ?>">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#penjualan_collapse" aria-expanded="true" aria-controls="penjualan_collapse">
           <i class="fas fa-fw fa-money-bill-wave"></i>
           <span>Transaksi</span>
         </a>
         <div id="penjualan_collapse" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="#">
+            <a class="collapse-item <?=$this->uri->segment(1)=='sale' ? 'active' : null ?>" href="<?=site_url('sale')?>">
             	Penjualan
             </a>
             <a class="collapse-item <?=$this->uri->segment(1)=='stock' && $this->uri->segment(2)=='in' ? 'active' : null ?>" href="<?=site_url('stock/in')?>">
