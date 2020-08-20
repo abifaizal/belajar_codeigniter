@@ -34,6 +34,19 @@
 						      <input type="text" class="form-control form-control-sm" name="user_nama" id="user_nama" value="<?=ucfirst($this->fungsi->user_login()->user_nama)?>" readonly="">
 						    </div>
 						  </div>
+						  <div class="form-group row">
+						    <label for="customer_id" class="col-sm-3 col-form-label" style="padding-right: 2px;">Customer</label>
+						    <div class="col-sm-9">
+						      <select name="customer_id" id="customer_id" class="form-control form-control-sm js-example-basic-single">
+						      	<option value="Umum">Umum</option>
+						      	<?php foreach ($customer as $key => $d_customer) { ?>
+				              <option value="<?=$d_customer->customer_id?>" >
+				                <?=$d_customer->customer_nama?>
+				              </option>
+				            <?php } ?>
+						      </select>
+						    </div>
+						  </div>
             </div>
           </div>
 				</div>
@@ -71,7 +84,8 @@
 					<div class="card shadow h-100">
             <div class="card-body">
             	<div class="ivoice-box" align="right" style="font-size: 18px;">
-            		Invoice <strong><span class="invoice-number">PJL20200819001</span></strong>
+            		Invoice <strong><span class="invoice-number"><?=$invoice_number?></span></strong>
+            		<input type="hidden" name="sale_invoice" value="<?=$invoice_number?>">
             	</div>
             	<div class="total-box" align="right" style="font-size: 45px; font-weight: bold; margin-top: 10px;">
             		170,845
@@ -163,3 +177,68 @@
     </form>
   </div>
 </div>
+
+<!-- modal daftar item -->
+<div class="modal fade" id="modal_daftar_item" tabindex="-1" aria-labelledby="modal_daftar_itemLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_daftar_itemLabel">Daftar Item</h5>
+        <button type="button" class="close" id="modal_close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+        	<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        <thead>
+		          <tr>
+		            <th>#</th>
+		            <th>Barcode</th>
+		            <th>Nama item</th>
+		            <th>Kategori</th>
+		            <th>Unit</th>
+		            <th>Stok</th>
+		            <th>Opsi</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+							<?php 
+		            $nomor = 1;
+		            foreach ($item->result() as $key => $data_item) {
+		          ?>
+		              <tr>
+		                <td><?=$nomor++?></td>
+		                <td><?=$data_item->item_barcode?></td>
+		                <td><?=$data_item->item_nama?></td>
+		                <td><?=$data_item->category_nama?></td>
+		                <td><?=$data_item->unit_nama?></td>
+		                <td><?=$data_item->item_stok?></td>
+		                <td align="center" class="td-opsi">
+	                    <button type="button" class="btn btn-sm btn-primary tmb_pilih_item" title="pilih item"
+												data-item_id = "<?=$data_item->item_id?>"
+												data-item_barcode = "<?=$data_item->item_barcode?>"
+												data-item_nama = "<?=$data_item->item_nama?>"
+												data-unit_nama = "<?=$data_item->unit_nama?>"
+	                    >
+	                      pilih
+	                    </button>
+		                </td>
+		              </tr>
+		          <?php } ?>
+		        </tbody>
+		      </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	$(document).ready(function() {
+	  $('.js-example-basic-single').select2();
+	});
+</script>

@@ -25,6 +25,9 @@
 
   <!-- Sweetalert 2 style -->
   <link href="<?=base_url()?>asset/sweetalert/dist/sweetalert2.min.css" rel="stylesheet">
+
+  <!-- select 2 -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body id="page-top" class="<?=$this->uri->segment(1) == 'sale' ? 'sidebar-toggled' : null ?>">
@@ -236,6 +239,8 @@
 				<script src="<?=base_url()?>asset/sb_admin2/vendor/jquery/jquery.min.js"></script>
 				<!-- Load sweetalert 2 -->
 				<script src="<?=base_url()?>asset/sweetalert/dist/sweetalert2.all.min.js"></script>
+        <!-- Load select 2 -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
