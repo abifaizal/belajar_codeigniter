@@ -66,6 +66,10 @@
 				  	      </div>
 						    </div>
 						  </div>
+						  <input type="hidden" id="item_id">
+						  <input type="hidden" id="item_nama">
+						  <input type="hidden" id="item_harga">
+						  <input type="hidden" id="item_stok">
 						  <div class="form-group row">
 						    <label for="item_qty" class="col-sm-3 col-form-label">Qty</label>
 						    <div class="col-sm-9">
@@ -73,7 +77,7 @@
 						    </div>
 						  </div>
 						  <div class="form-group" align="right">
-						  	<button type="button" class="btn btn-sm btn-success"><i class="fas fa-cart-plus"></i> add</button>
+						  	<button type="button" class="btn btn-sm btn-success" id="add_item_cart"><i class="fas fa-cart-plus"></i> add</button>
 						  </div>
             </div>
           </div>
@@ -219,7 +223,8 @@
 												data-item_id = "<?=$data_item->item_id?>"
 												data-item_barcode = "<?=$data_item->item_barcode?>"
 												data-item_nama = "<?=$data_item->item_nama?>"
-												data-unit_nama = "<?=$data_item->unit_nama?>"
+												data-item_harga = "<?=$data_item->item_harga?>"
+												data-item_stok = "<?=$data_item->item_stok?>"
 	                    >
 	                      pilih
 	                    </button>
@@ -241,4 +246,41 @@
 	$(document).ready(function() {
 	  $('.js-example-basic-single').select2();
 	});
+
+	$(".tmb_pilih_item").click(function() {
+		var item_id = $(this).data('item_id');
+		var item_barcode = $(this).data('item_barcode');
+		var item_nama = $(this).data('item_nama');
+		var item_harga = $(this).data('item_harga');
+		var item_stok = $(this).data('item_stok');
+		$("#item_id").val(item_id);
+		$("#item_barcode").val(item_barcode);
+		$("#item_nama").val(item_nama);
+		$("#item_harga").val(item_harga);
+		$("#item_stok").val(item_stok);
+
+		$("#modal_close").click();
+	})
+
+	$("#add_item_cart").click(function() {
+		var item_id = $("#item_id").val();
+		var item_barcode = $("#item_barcode").val();
+		var item_nama = $("#item_nama").val();
+		var item_harga = Number($("#item_harga").val());
+		var item_stok = Number($("#item_stok").val());
+		var item_qty = Number($("#item_qty").val());
+
+		if(item_id == "") {
+			alert("Anda belum memilih item");
+			$("#item_barcode").focus();
+		} else if(item_qty == "" || item_qty <= 0) {
+			alert("Qty tidak boleh kosong atau kurang dari 0");
+			$("#item_qty").focus();
+		} else if(item_qty > item_stok) {
+			alert("Jumlah stok item tidak cukup");
+			$("#item_qty").focus();
+		} else {
+			alert("ok");
+		}
+	})
 </script>
