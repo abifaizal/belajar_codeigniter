@@ -92,7 +92,7 @@
             		<input type="hidden" name="sale_invoice" value="<?=$invoice_number?>">
             	</div>
             	<div class="total-box" align="right" style="font-size: 45px; font-weight: bold; margin-top: 10px;">
-            		170,845
+            		<span id="sale_total_text">0</span>
             	</div>
             </div>
           </div>
@@ -113,11 +113,24 @@
 										<th>Opsi</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td colspan="6" align="center">Keranjang masih kosong</td>
-									</tr>
+								<tbody id="tbody_cart">
+									<!-- diisi dengan jquery -->
 								</tbody>
+								<tfoot>
+		              <tr id="no_data" align="center">
+		                <td colspan="6">Belum ada item ditambahkan</td>
+		              </tr>
+		              <tr id="baris_total" style="display: none;">
+		                <td colspan="5">
+		                  Total : Rp <span id="total_keranjang"></span>
+		                </td>
+		                <td class="td-opsi" align="center">
+		                  <button type="button" class="btn btn-sm btn-danger" id="hapus_keranjang">
+		                    <i class="fas fa-trash"></i>
+		                  </button>
+		                </td>
+		              </tr>
+		            </tfoot>
 							</table>
             </div>
           </div>
@@ -243,9 +256,21 @@
 </div>
 
 <script>
+	var count = 0;
+	var total_pjl = 0;
+
 	$(document).ready(function() {
 	  $('.js-example-basic-single').select2();
 	});
+
+	function clear() {
+		$("#item_id").val("");
+		$("#item_barcode").val("");
+		$("#item_qty").val("");
+		$("#item_nama").val("");
+		$("#item_harga").val("");
+		$("#item_stok").val("");
+	}
 
 	$(".tmb_pilih_item").click(function() {
 		var item_id = $(this).data('item_id');
@@ -280,7 +305,27 @@
 			alert("Jumlah stok item tidak cukup");
 			$("#item_qty").focus();
 		} else {
-			alert("ok");
+			var item_subtotal = item_harga * item_qty;
+			count = count + 1;
+      var baris_baru = '';
+      baris_baru += '<tr id="row_'+count+'">';
+      baris_baru +=   '<td>'+item_barcode+'<input type="hidden" class="hidden_item_id" id="hidden_item_id'+count+'" name="hidden_item_id[]" value="'+item_id+'"></td>';
+      baris_baru +=   '<td>'+item_nama+'</td>';
+      baris_baru +=   '<td>'+item_harga+'</td>';
+      baris_baru +=   '<td>'+item_qty+'<input type="hidden" class="hidden_item_qty" id="hidden_item_qty'+count+'" name="hidden_item_qty[]" value="'+item_qty+'"></td>';
+      baris_baru +=   '<td>'+item_subtotal+'<input type="hidden" class="hiddem_item_subtotal" id="hiddem_item_subtotal'+count+'" name="hiddem_item_subtotal[]" value="'+item_subtotal+'"></td>';
+      baris_baru +=   '<td class="td-opsi" align="center"><button type="button" class="btn btn-sm btn-danger del_item_cart" id="'+count+'"><i class="fas fa-trash"></i></button></td>';
+      baris_baru += '</tr>';
+      $("#tbody_cart").append(baris_baru);
+      $("#no_data").hide();
+      total_pjl = total_pjl + item_subtotal;
+      $("#total_keranjang").text(total_pjl);
+      $("#sale_total_text").text(total_pjl);
+      $("#sale_subtotal").val(total_pjl);
+      $("#baris_total").show();
+      // $("#bayar_pjl").val("");
+      // $("#kembalian_pjl").val("");
+      clear();
 		}
 	})
 </script>
