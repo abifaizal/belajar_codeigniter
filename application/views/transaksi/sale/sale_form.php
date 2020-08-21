@@ -109,7 +109,7 @@
 										<th>Item</th>
 										<th>Harga</th>
 										<th>Qty</th>
-										<th>Subtotal</th>
+										<th>Total</th>
 										<th>Opsi</th>
 									</tr>
 								</thead>
@@ -305,7 +305,7 @@
 			alert("Jumlah stok item tidak cukup");
 			$("#item_qty").focus();
 		} else {
-			var item_subtotal = item_harga * item_qty;
+			var item_total = item_harga * item_qty;
 			count = count + 1;
       var baris_baru = '';
       baris_baru += '<tr id="row_'+count+'">';
@@ -313,12 +313,12 @@
       baris_baru +=   '<td>'+item_nama+'</td>';
       baris_baru +=   '<td>'+item_harga+'</td>';
       baris_baru +=   '<td>'+item_qty+'<input type="hidden" class="hidden_item_qty" id="hidden_item_qty'+count+'" name="hidden_item_qty[]" value="'+item_qty+'"></td>';
-      baris_baru +=   '<td>'+item_subtotal+'<input type="hidden" class="hiddem_item_subtotal" id="hiddem_item_subtotal'+count+'" name="hiddem_item_subtotal[]" value="'+item_subtotal+'"></td>';
+      baris_baru +=   '<td>'+item_total+'<input type="hidden" class="hiddem_item_subtotal" id="hiddem_item_subtotal'+count+'" name="hiddem_item_subtotal[]" value="'+item_total+'"></td>';
       baris_baru +=   '<td class="td-opsi" align="center"><button type="button" class="btn btn-sm btn-danger del_item_cart" id="'+count+'"><i class="fas fa-trash"></i></button></td>';
       baris_baru += '</tr>';
       $("#tbody_cart").append(baris_baru);
       $("#no_data").hide();
-      total_pjl = total_pjl + item_subtotal;
+      total_pjl = total_pjl + item_total;
       $("#total_keranjang").text(total_pjl);
       $("#sale_total_text").text(total_pjl);
       $("#sale_subtotal").val(total_pjl);
