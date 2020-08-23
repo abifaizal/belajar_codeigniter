@@ -349,6 +349,22 @@
 		}
 	})
 
+	$(document).on("click", ".del_item_cart", function() {
+    var row_id = $(this).attr("id");
+    var item_total = Number($("#hidden_item_total"+row_id).val());
+    total_pjl = total_pjl - item_total;
+    $("#total_keranjang").text(total_pjl);
+    $("#sale_total_text").text(total_pjl);
+    $("#sale_subtotal").val(total_pjl);
+    $("#row_"+row_id).remove();
+    // $("#bayar_pjl").val("");
+    // $("#kembalian_pjl").val("");
+    if(total_pjl == 0) {
+      $("#no_data").show();
+      $("#baris_total").hide();
+    }
+  })
+
 	$("#tmb_tes").click(function() {
 		// var values = ["Banana", "Orange", "Apple", "Mango"];
 		var values = $("input[name='hidden_item_total[]']").map(function(){return $(this).val();}).get();
