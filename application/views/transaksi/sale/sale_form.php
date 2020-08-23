@@ -7,6 +7,7 @@
   			<h6 class="font-weight-bold text-primary">Form Transaksi Penjualan</h6>
   		</div>
   		<div class="col-md-6" style="text-align: right;">
+  			<button type="button" id="tmb_tes" class="btn btn-sm btn-primary">Tes</button>
   			<a href="<?=site_url('sale/data')?>">
   				<button class="btn btn-sm btn-dark">Riwayat Transaksi</button>
   			</a>
@@ -256,7 +257,6 @@
 </div>
 
 <script>
-	var count = 0;
 	var total_pjl = 0;
 
 	$(document).ready(function() {
@@ -283,6 +283,7 @@
 		$("#item_nama").val(item_nama);
 		$("#item_harga").val(item_harga);
 		$("#item_stok").val(item_stok);
+		$("#item_qty").val(1);
 
 		$("#modal_close").click();
 	})
@@ -305,18 +306,37 @@
 			alert("Jumlah stok item tidak cukup");
 			$("#item_qty").focus();
 		} else {
+			var item_sama = "kosong";
 			var item_total = item_harga * item_qty;
-			count = count + 1;
-      var baris_baru = '';
-      baris_baru += '<tr id="row_'+count+'">';
-      baris_baru +=   '<td>'+item_barcode+'<input type="hidden" class="hidden_item_id" id="hidden_item_id'+count+'" name="hidden_item_id[]" value="'+item_id+'"></td>';
-      baris_baru +=   '<td>'+item_nama+'</td>';
-      baris_baru +=   '<td>'+item_harga+'</td>';
-      baris_baru +=   '<td>'+item_qty+'<input type="hidden" class="hidden_item_qty" id="hidden_item_qty'+count+'" name="hidden_item_qty[]" value="'+item_qty+'"></td>';
-      baris_baru +=   '<td>'+item_total+'<input type="hidden" class="hiddem_item_subtotal" id="hiddem_item_subtotal'+count+'" name="hiddem_item_subtotal[]" value="'+item_total+'"></td>';
-      baris_baru +=   '<td class="td-opsi" align="center"><button type="button" class="btn btn-sm btn-danger del_item_cart" id="'+count+'"><i class="fas fa-trash"></i></button></td>';
-      baris_baru += '</tr>';
-      $("#tbody_cart").append(baris_baru);
+			var jml_baris = $("input[name='hidden_item_id[]']").map(function(){return $(this).val();}).get();
+
+			if(jml_baris.length > 0) {
+				for(var i = 0; i < jml_baris.length; i++) {
+					if(item_id == jml_baris[i]) {
+						item_sama = "ada";
+						var this_qty = Number($("#hidden_item_qty"+jml_baris[i]).val());
+						var new_qty = item_qty + this_qty;
+						var this_total = Number($("#hidden_item_total"+jml_baris[i]).val());
+						var new_total = item_total + this_total;
+						$("#hidden_item_qty"+jml_baris[i]).val(new_qty);
+						$("#span_hidden_item_qty"+jml_baris[i]).text(new_qty);
+						$("#hidden_item_total"+jml_baris[i]).val(new_total);
+						$("#span_hidden_item_total"+jml_baris[i]).text(new_total);
+					}
+				}
+			}
+			if(item_sama == "kosong") {
+	      var baris_baru = '';
+	      baris_baru += '<tr id="row_'+item_id+'">';
+	      baris_baru +=   '<td>'+item_barcode+'<input type="hidden" class="hidden_item_id" id="hidden_item_id'+item_id+'" name="hidden_item_id[]" value="'+item_id+'"></td>';
+	      baris_baru +=   '<td>'+item_nama+'</td>';
+	      baris_baru +=   '<td>'+item_harga+'</td>';
+	      baris_baru +=   '<td><span id="span_hidden_item_qty'+item_id+'">'+item_qty+'</span><input type="hidden" class="hidden_item_qty" id="hidden_item_qty'+item_id+'" name="hidden_item_qty[]" value="'+item_qty+'"></td>';
+	      baris_baru +=   '<td><span id="span_hidden_item_total'+item_id+'">'+item_total+'</span><input type="hidden" class="hidden_item_total" id="hidden_item_total'+item_id+'" name="hidden_item_total[]" value="'+item_total+'"></td>';
+	      baris_baru +=   '<td class="td-opsi" align="center"><button type="button" class="btn btn-sm btn-danger del_item_cart" id="'+item_id+'"><i class="fas fa-trash"></i></button></td>';
+	      baris_baru += '</tr>';
+	      $("#tbody_cart").append(baris_baru);
+	    }
       $("#no_data").hide();
       total_pjl = total_pjl + item_total;
       $("#total_keranjang").text(total_pjl);
@@ -327,5 +347,11 @@
       // $("#kembalian_pjl").val("");
       clear();
 		}
+	})
+
+	$("#tmb_tes").click(function() {
+		// var values = ["Banana", "Orange", "Apple", "Mango"];
+		var values = $("input[name='hidden_item_total[]']").map(function(){return $(this).val();}).get();
+		alert(values);
 	})
 </script>

@@ -1,0 +1,10 @@
+count = count + 1;
+var baris_baru = '';
+baris_baru += '<tr id="row_'+count+'">';
+baris_baru +=   '<td>'+item_barcode+'<input type="hidden" class="hidden_item_id" id="hidden_item_id'+count+'" name="hidden_item_id[]" value="'+item_id+'"></td>';
+baris_baru +=   '<td>'+item_nama+'</td>';
+baris_baru +=   '<td>'+item_harga+'</td>';
+baris_baru +=   '<td>'+item_qty+'<input type="hidden" class="hidden_item_qty" id="hidden_item_qty'+count+'" name="hidden_item_qty[]" value="'+item_qty+'"></td>';
+baris_baru +=   '<td>'+item_total+'<input type="hidden" class="hiddem_item_subtotal" id="hiddem_item_subtotal'+count+'" name="hiddem_item_subtotal[]" value="'+item_total+'"></td>';
+baris_baru +=   '<td class="td-opsi" align="center"><button type="button" class="btn btn-sm btn-danger del_item_cart" id="'+count+'"><i class="fas fa-trash"></i></button></td>';
+baris_baru += '</tr>';
