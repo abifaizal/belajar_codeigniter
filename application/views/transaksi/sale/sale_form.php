@@ -7,7 +7,7 @@
   			<h6 class="font-weight-bold text-primary">Form Transaksi Penjualan</h6>
   		</div>
   		<div class="col-md-6" style="text-align: right;">
-  			<button type="button" id="tmb_tes" class="btn btn-sm btn-primary">Tes</button>
+  			<!-- <button type="button" id="tmb_tes" class="btn btn-sm btn-primary">Tes</button> -->
   			<a href="<?=site_url('sale/data')?>">
   				<button class="btn btn-sm btn-dark">Riwayat Transaksi</button>
   			</a>
@@ -78,6 +78,7 @@
 						    </div>
 						  </div>
 						  <div class="form-group" align="right">
+						  	<button type="button" class="btn btn-sm btn-secondary" id="clear_item_form"><i class="fas fa-redo"></i> clear</button>
 						  	<button type="button" class="btn btn-sm btn-success" id="add_item_cart"><i class="fas fa-cart-plus"></i> add</button>
 						  </div>
             </div>
@@ -126,7 +127,7 @@
 		                  Total : Rp <span id="total_keranjang"></span>
 		                </td>
 		                <td class="td-opsi" align="center">
-		                  <button type="button" class="btn btn-sm btn-danger" id="hapus_keranjang">
+		                  <button type="button" class="btn btn-sm btn-danger" id="empty_keranjang">
 		                    <i class="fas fa-trash"></i>
 		                  </button>
 		                </td>
@@ -176,7 +177,7 @@
 						  <div class="form-group row">
 						    <label for="sale_kembali" class="col-sm-4 col-form-label">Kembali</label>
 						    <div class="col-sm-8">
-						      <input type="number" class="form-control form-control-sm" name="sale_kembali" id="sale_kembali" readonly>
+						      <input type="text" class="form-control form-control-sm" name="sale_kembali" id="sale_kembali" readonly>
 						    </div>
 						  </div>
             </div>
@@ -185,7 +186,7 @@
 			</div>
 			<hr>
 			<div class="submit-cancel-button" align="right">
-				<button type="button" class="btn btn-danger">
+				<button type="button" class="btn btn-danger" id="cancel_transaksi">
 					<i class="fas fa-sync-alt"></i> Cancel
 				</button>
 				<button type="button" class="btn btn-success">
@@ -272,6 +273,21 @@
 		$("#item_stok").val("");
 	}
 
+	function hitung_diskon(diskon, total) {
+		var total_pjl = total - (total * diskon / 100);
+		$("#sale_total_text").text(total_pjl);
+		$("#sale_total").val(total_pjl);
+	}
+
+	function hitung_kembalian(bayar, total) {
+		if(bayar >= total) {
+			var kembali = bayar - total;
+			$("#sale_kembali").val(kembali);
+		} else {
+			$("#sale_kembali").val("jumlah bayar tidak cukup");
+		}
+	}
+
 	$(".tmb_pilih_item").click(function() {
 		var item_id = $(this).data('item_id');
 		var item_barcode = $(this).data('item_barcode');
@@ -288,6 +304,10 @@
 		$("#modal_close").click();
 	})
 
+	$("#clear_item_form").click(function() {
+		clear();
+	})
+
 	$("#add_item_cart").click(function() {
 		var item_id = $("#item_id").val();
 		var item_barcode = $("#item_barcode").val();
@@ -297,16 +317,32 @@
 		var item_qty = Number($("#item_qty").val());
 
 		if(item_id == "") {
-			alert("Anda belum memilih item");
 			$("#item_barcode").focus();
+			Swal.fire({
+        type: 'warning',
+        title: 'Peringatan',
+        text: 'Belum ada item yang dipilih',
+        showConfirmButton: true
+      })
 		} else if(item_qty == "" || item_qty <= 0) {
-			alert("Qty tidak boleh kosong atau kurang dari 0");
 			$("#item_qty").focus();
+			Swal.fire({
+        type: 'warning',
+        title: 'Peringatan',
+        text: 'Qty tidak boleh kosong atau kurang dari 0',
+        showConfirmButton: true
+      })
 		} else if(item_qty > item_stok) {
-			alert("Jumlah stok item tidak cukup");
 			$("#item_qty").focus();
+			Swal.fire({
+        type: 'warning',
+        title: 'Peringatan',
+        text: 'Jumlah stok item tidak cukup',
+        showConfirmButton: true
+      })
 		} else {
 			var item_sama = "kosong";
+			var status_stok = "cukup";
 			var item_total = item_harga * item_qty;
 			var jml_baris = $("input[name='hidden_item_id[]']").map(function(){return $(this).val();}).get();
 
@@ -316,12 +352,23 @@
 						item_sama = "ada";
 						var this_qty = Number($("#hidden_item_qty"+jml_baris[i]).val());
 						var new_qty = item_qty + this_qty;
-						var this_total = Number($("#hidden_item_total"+jml_baris[i]).val());
-						var new_total = item_total + this_total;
-						$("#hidden_item_qty"+jml_baris[i]).val(new_qty);
-						$("#span_hidden_item_qty"+jml_baris[i]).text(new_qty);
-						$("#hidden_item_total"+jml_baris[i]).val(new_total);
-						$("#span_hidden_item_total"+jml_baris[i]).text(new_total);
+						if(new_qty > item_stok) {
+							status_stok = "tidak cukup";
+							$("#item_qty").focus();
+							Swal.fire({
+				        type: 'warning',
+				        title: 'Peringatan',
+				        text: 'Jumlah stok item tidak cukup',
+				        showConfirmButton: true
+				      })
+						} else {
+							var this_total = Number($("#hidden_item_total"+jml_baris[i]).val());
+							var new_total = item_total + this_total;
+							$("#hidden_item_qty"+jml_baris[i]).val(new_qty);
+							$("#span_hidden_item_qty"+jml_baris[i]).text(new_qty);
+							$("#hidden_item_total"+jml_baris[i]).val(new_total);
+							$("#span_hidden_item_total"+jml_baris[i]).text(new_total);
+						}
 					}
 				}
 			}
@@ -337,15 +384,20 @@
 	      baris_baru += '</tr>';
 	      $("#tbody_cart").append(baris_baru);
 	    }
-      $("#no_data").hide();
-      total_pjl = total_pjl + item_total;
-      $("#total_keranjang").text(total_pjl);
-      $("#sale_total_text").text(total_pjl);
-      $("#sale_subtotal").val(total_pjl);
-      $("#baris_total").show();
-      // $("#bayar_pjl").val("");
-      // $("#kembalian_pjl").val("");
-      clear();
+
+	    if(status_stok == "cukup") {
+	      $("#no_data").hide();
+	      total_pjl = total_pjl + item_total;
+	      $("#total_keranjang").text(total_pjl);
+	      $("#sale_total_text").text(total_pjl);
+	      $("#sale_subtotal").val(total_pjl);
+	      $("#sale_total").val(total_pjl);
+	      $("#baris_total").show();
+	      $("#sale_diskon").val(0);
+	      $("#sale_bayar").val("");
+	      $("#sale_kembali").val("");
+	      clear();
+	    }
 		}
 	})
 
@@ -356,18 +408,89 @@
     $("#total_keranjang").text(total_pjl);
     $("#sale_total_text").text(total_pjl);
     $("#sale_subtotal").val(total_pjl);
+    $("#sale_total").val(total_pjl);
+    $("#sale_diskon").val(0);
+    $("#sale_bayar").val("");
+    $("#sale_kembali").val("");
     $("#row_"+row_id).remove();
-    // $("#bayar_pjl").val("");
-    // $("#kembalian_pjl").val("");
     if(total_pjl == 0) {
       $("#no_data").show();
       $("#baris_total").hide();
+      $("#sale_subtotal").val("");
+    	$("#sale_total").val("");
     }
   })
 
-	$("#tmb_tes").click(function() {
-		// var values = ["Banana", "Orange", "Apple", "Mango"];
-		var values = $("input[name='hidden_item_total[]']").map(function(){return $(this).val();}).get();
-		alert(values);
-	})
+  $("#empty_keranjang").click(function() {
+    Swal.fire({
+      title: 'Hapus Semua ?',
+      text: 'apakah anda yakin mengeluarkan semua item di keranjang',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya'
+    }).then((hapus) => {
+      if (hapus.value) {
+        $("#tbody_cart > tr").remove();
+        total_pjl = 0;
+        $("#total_keranjang").text(total_pjl);
+		    $("#sale_total_text").text(total_pjl);
+		    $("#sale_subtotal").val("");
+		    $("#sale_total").val("");
+		    $("#sale_diskon").val(0);
+		    $("#sale_bayar").val("");
+		    $("#sale_kembali").val("");
+        $("#no_data").show();
+        $("#baris_total").hide();
+      }
+    })
+  })
+
+  $("#sale_diskon").change(function() {
+  	var diskon = Number($("#sale_diskon").val());
+  	var total = Number($("#sale_subtotal").val());
+  	if(total > 0 && diskon >= 0) {
+  		hitung_diskon(diskon, total);
+  	}
+  	$("#sale_bayar").val("");
+		$("#sale_kembali").val("");
+  })
+  $("#sale_diskon").keyup(function() {
+  	var diskon = Number($("#sale_diskon").val());
+  	var total = Number($("#sale_subtotal").val());
+  	if(total > 0 && diskon >= 0) {
+  		hitung_diskon(diskon, total);
+  	}
+  	$("#sale_bayar").val("");
+		$("#sale_kembali").val("");
+  })
+
+  $("#sale_bayar").change(function() {
+  	var bayar = Number($("#sale_bayar").val());
+  	var total = Number($("#sale_total").val());
+  	hitung_kembalian(bayar, total);
+  })
+  $("#sale_bayar").keyup(function() {
+  	var bayar = Number($("#sale_bayar").val());
+  	var total = Number($("#sale_total").val());
+  	hitung_kembalian(bayar, total);
+  })
+
+  $("#cancel_transaksi").click(function() {
+  	Swal.fire({
+      title: 'Peringatan',
+      text: 'apakah anda yakin akan membatalkan transaksi?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya'
+    }).then((batal) => {
+      if (batal.value) {
+        location.reload();
+      }
+    })
+  })
+
 </script>
