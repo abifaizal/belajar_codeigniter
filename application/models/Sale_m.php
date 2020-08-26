@@ -23,5 +23,30 @@
             return $invoice_number;
         }
 
+        public function add_parent_sale($inputan) {
+            $params = array(
+                'sale_invoice'      => $inputan['sale_invoice'],
+                'customer_id'       => empty($inputan['customer_id']) ? null : $inputan['customer_id'],
+                'sale_tanggal'      => $inputan['sale_tanggal'],
+                'sale_total'        => $inputan['sale_subtotal'],
+                'sale_diskon'       => $inputan['sale_diskon'],
+                'sale_finaltotal'   => $inputan['sale_total'],
+                'sale_bayar'        => $inputan['sale_bayar'],
+                'user_id'           => $this->fungsi->user_login()->user_id,
+            );
+            $this->db->insert('tb_sale', $params);
+        }
+
+        public function add_detail_sale($inputan) {
+            $params = array(
+                'item_id'               => $inputan['item_id'],
+                'sale_detail_harga'     => $inputan['item_harga'],
+                'sale_detail_qty'       => $inputan['item_qty'],
+                'sale_detail_total'     => $inputan['item_total'],
+                'sale_invoice'          => $inputan['sale_invoice'],
+            );
+            $this->db->insert('tb_sale_detail', $params);
+        }
+
     }
 ?>

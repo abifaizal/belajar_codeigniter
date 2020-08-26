@@ -50,7 +50,7 @@
 
         	if(isset($_POST['submit_stock_in'])) {
         		$this->stock_m->add_stock_in($inputan);
-        		$this->item_m->update_stock_in($inputan);
+        		$this->item_m->update_stock_in($inputan['stock_qty'], $inputan['item_id']);
         		if($this->db->affected_rows() > 0) {
 	                $this->session->set_flashdata('success', 'Data telah tersimpan');
 	            }
@@ -64,7 +64,7 @@
         			redirect('stock/out/add');
         		} else {
 	        		$this->stock_m->add_stock_out($inputan);
-	        		$this->item_m->update_stock_out($inputan);
+	        		$this->item_m->update_stock_out($inputan['stock_qty'], $inputan['item_id']);
 	        		if($this->db->affected_rows() > 0) {
 		                $this->session->set_flashdata('success', 'Data telah tersimpan');
 		            }
@@ -80,7 +80,7 @@
 			$stock_qty = $row->stock_qty;
 			$inputan = array('item_id' => $item_id, 'stock_qty' => $stock_qty);
 
-			$this->item_m->update_stock_out($inputan);
+			$this->item_m->update_stock_out($inputan['stock_qty'], $inputan['item_id']);
 			$this->stock_m->del($stock_id);
 
 			if($this->db->affected_rows() > 0) {
@@ -96,7 +96,7 @@
 			$stock_qty = $row->stock_qty;
 			$inputan = array('item_id' => $item_id, 'stock_qty' => $stock_qty);
 
-			$this->item_m->update_stock_in($inputan);
+			$this->item_m->update_stock_in($inputan['stock_qty'], $inputan['item_id']);
 			$this->stock_m->del($stock_id);
 
 			if($this->db->affected_rows() > 0) {

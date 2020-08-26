@@ -16,7 +16,7 @@
   </div>
   <div class="card-body">
     <? $this->view('message') ?>
-    <form action="<?=site_url('sale/proses')?>" method="post" autocomplete="off" enctype="multipart/form-data">
+    <form action="" method="post" id="form_transaksi_penjualan" autocomplete="off" enctype="multipart/form-data">
 			<div class="row">
 				<!-- Kotak Tanggal, Kasir -->
 				<div class="col-lg-4">
@@ -39,7 +39,7 @@
 						    <label for="customer_id" class="col-sm-3 col-form-label" style="padding-right: 2px;">Customer</label>
 						    <div class="col-sm-9">
 						      <select name="customer_id" id="customer_id" class="form-control form-control-sm js-example-basic-single">
-						      	<option value="Umum">Umum</option>
+						      	<option value="">Umum</option>
 						      	<?php foreach ($customer as $key => $d_customer) { ?>
 				              <option value="<?=$d_customer->customer_id?>" >
 				                <?=$d_customer->customer_nama?>
@@ -171,7 +171,7 @@
               <div class="form-group row">
 						    <label for="sale_bayar" class="col-sm-4 col-form-label">Bayar</label>
 						    <div class="col-sm-8">
-						      <input type="number" class="form-control form-control-sm" name="sale_bayar" id="sale_bayar" required>
+						      <input type="number" class="form-control form-control-sm" name="sale_bayar" id="sale_bayar">
 						    </div>
 						  </div>
 						  <div class="form-group row">
@@ -189,7 +189,7 @@
 				<button type="button" class="btn btn-danger" id="cancel_transaksi">
 					<i class="fas fa-sync-alt"></i> Cancel
 				</button>
-				<button type="button" class="btn btn-success">
+				<button type="submit" class="btn btn-success" id="proses_transaksi">
 					<i class="fas fa-paper-plane"></i> Proses Transaksi
 				</button>
 			</div>
@@ -274,9 +274,9 @@
 	}
 
 	function hitung_diskon(diskon, total) {
-		var total_pjl = total - (total * diskon / 100);
-		$("#sale_total_text").text(total_pjl);
-		$("#sale_total").val(total_pjl);
+		var total_pjl_diskon = total - (total * diskon / 100);
+		$("#sale_total_text").text(total_pjl_diskon);
+		$("#sale_total").val(total_pjl_diskon);
 	}
 
 	function hitung_kembalian(bayar, total) {
@@ -377,7 +377,7 @@
 	      baris_baru += '<tr id="row_'+item_id+'">';
 	      baris_baru +=   '<td>'+item_barcode+'<input type="hidden" class="hidden_item_id" id="hidden_item_id'+item_id+'" name="hidden_item_id[]" value="'+item_id+'"></td>';
 	      baris_baru +=   '<td>'+item_nama+'</td>';
-	      baris_baru +=   '<td>'+item_harga+'</td>';
+	      baris_baru +=   '<td>'+item_harga+'<input type="hidden" class="hidden_item_harga" id="hidden_item_harga'+item_id+'" name="hidden_item_harga[]" value="'+item_harga+'"></td>';
 	      baris_baru +=   '<td><span id="span_hidden_item_qty'+item_id+'">'+item_qty+'</span><input type="hidden" class="hidden_item_qty" id="hidden_item_qty'+item_id+'" name="hidden_item_qty[]" value="'+item_qty+'"></td>';
 	      baris_baru +=   '<td><span id="span_hidden_item_total'+item_id+'">'+item_total+'</span><input type="hidden" class="hidden_item_total" id="hidden_item_total'+item_id+'" name="hidden_item_total[]" value="'+item_total+'"></td>';
 	      baris_baru +=   '<td class="td-opsi" align="center"><button type="button" class="btn btn-sm btn-danger del_item_cart" id="'+item_id+'"><i class="fas fa-trash"></i></button></td>';
@@ -493,4 +493,71 @@
     })
   })
 
+  $("#form_transaksi_penjualan").submit(function() {
+  	event.preventDefault();
+  	var diskon = Number($("#sale_diskon").val());
+  	var bayar = Number($("#sale_bayar").val());
+  	var total_akhir = Number($("#sale_total").val());
+
+  	if(total_pjl == 0) {
+  		$("#item_barcode").focus();
+			Swal.fire({
+        type: 'warning',
+        title: 'Peringatan',
+        text: 'Belum ada item yang dipilih',
+        showConfirmButton: true
+      })
+  	}
+  	else if(diskon < 0 || diskon > 100) {
+  		$("#sale_diskon").focus();
+			Swal.fire({
+        type: 'warning',
+        title: 'Peringatan',
+        text: 'Masukkan jumlah diskon yang benar',
+        showConfirmButton: true
+      })
+  	}
+  	else if(bayar < total_akhir) {
+  		$("#sale_bayar").focus();
+			Swal.fire({
+        type: 'warning',
+        title: 'Peringatan',
+        text: 'Jumlah bayar tidak cukup',
+        showConfirmButton: true
+      })
+  	}
+  	else {
+  		Swal.fire({
+        title: 'Proses ?',
+        text: 'apakah anda yakin telah mengisi form transaksi dengan benar',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya'
+      }).then((simpan) => {
+        if (simpan.value) {
+          var form_data = $(this).serialize();
+          $.ajax({
+            url: "sale/proses",
+            method: "POST",
+            data: form_data,
+            success:function(data) {
+              Swal.fire({
+                title: 'Berhasil',
+                text: 'Transaksi tersimpan',
+                type: 'success',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+              }).then((ok) => {
+                if (ok.value) {
+                  location.reload();
+                }
+              })
+            }
+          })
+        }
+      })
+  	}
+  })
 </script>

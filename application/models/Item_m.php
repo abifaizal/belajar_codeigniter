@@ -62,15 +62,15 @@
             return $query;
         }
 
-        function update_stock_in($inputan) {
-            $this->db->set('item_stok', 'item_stok + '.$inputan['stock_qty'], FALSE);
-            $this->db->where('item_id', $inputan['item_id']);
+        function update_stock_in($qty, $item_id) {
+            $this->db->set('item_stok', 'item_stok + '.$qty, FALSE);
+            $this->db->where('item_id', $item_id);
             $this->db->update('tb_item');
         }
 
-        function update_stock_out($inputan) {
-            $this->db->set('item_stok', 'item_stok - '.$inputan['stock_qty'], FALSE);
-            $this->db->where('item_id', $inputan['item_id']);
+        function update_stock_out($qty, $item_id) {
+            $this->db->set('item_stok', 'item_stok - '.$qty, FALSE);
+            $this->db->where('item_id', $item_id);
             $this->db->update('tb_item');
         }
     }
