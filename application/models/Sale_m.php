@@ -1,6 +1,16 @@
 <?php
     class Sale_m extends CI_Model {
 
+        public function get_parent_sale() {
+            $this->db->select('*');
+            $this->db->from('tb_sale');
+            $this->db->join('tb_customer', 'tb_sale.customer_id = tb_customer.customer_id', 'left');
+            $this->db->join('tb_user', 'tb_sale.user_id = tb_user.user_id');
+            $this->db->order_by('sale_id DESC');
+            $query = $this->db->get();
+            return $query; 
+        }
+
         public function get_sale_number() {
             $tanggal_pjl = date('Y-m-d');
             $hari= substr($tanggal_pjl, 8, 2);

@@ -23,6 +23,13 @@
             $this->template->load('template', 'transaksi/sale/sale_form', $data);
         }
 
+        public function data() {
+            $data['header'] = 'Data Transaksi Penjualan';
+            $data['aktif_page'] = 'penjualan_data';
+            $data['daftar_penjualan'] = $this->sale_m->get_parent_sale();
+            $this->template->load('template', 'transaksi/sale/sale_data', $data);
+        }
+
         public function proses() {
             $inputan = $this->input->post(null, TRUE);
             $this->sale_m->add_parent_sale($inputan);
