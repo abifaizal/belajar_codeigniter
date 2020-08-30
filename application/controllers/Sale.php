@@ -30,6 +30,12 @@
             $this->template->load('template', 'transaksi/sale/sale_data', $data);
         }
 
+        public function detail_transaksi() {
+            $sale_invoice = $this->input->post('sale_invoice');
+            $detail_transaksi = $this->sale_m->get_detail_sale($sale_invoice)->result();
+            echo json_encode($detail_transaksi);
+        }
+
         public function proses() {
             $inputan = $this->input->post(null, TRUE);
             $this->sale_m->add_parent_sale($inputan);
@@ -46,6 +52,14 @@
 
                 $this->item_m->update_stock_out($inputan['hidden_item_qty'][$i], $inputan['hidden_item_id'][$i]);
             }
+        }
+
+        public function delete_transaksi() {
+            $sale_id = $this->input->post('sale_id');
+            $sale_invoice = $this->input->post('sale_invoice');
+
+            $this->sale_m->del_sale_detail($sale_invoice);
+            $this->sale_m->del_sale_parent($sale_id);
         }
     }
 ?>

@@ -11,6 +11,15 @@
             return $query; 
         }
 
+        public function get_detail_sale($sale_invoice) {
+            $this->db->select('*');
+            $this->db->from('tb_sale_detail');
+            $this->db->join('tb_item', 'tb_sale_detail.item_id = tb_item.item_id');
+            $this->db->where('sale_invoice', $sale_invoice);
+            $query = $this->db->get();
+            return $query; 
+        }
+
         public function get_sale_number() {
             $tanggal_pjl = date('Y-m-d');
             $hari= substr($tanggal_pjl, 8, 2);
@@ -56,6 +65,16 @@
                 'sale_invoice'          => $inputan['sale_invoice'],
             );
             $this->db->insert('tb_sale_detail', $params);
+        }
+
+        public function del_sale_detail($sale_invoice) {
+            $this->db->where('sale_invoice', $sale_invoice);
+            $this->db->delete('tb_sale_detail');
+        }
+
+        public function del_sale_parent($sale_id) {
+            $this->db->where('sale_id', $sale_id);
+            $this->db->delete('tb_sale');
         }
 
     }

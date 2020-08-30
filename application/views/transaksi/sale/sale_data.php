@@ -43,14 +43,15 @@
                     data-sale_id = "<?=$data->sale_id?>"
                     data-sale_invoice = "<?=$data->sale_invoice?>"
                     data-sale_tanggal = "<?=$data->sale_tanggal?>"
-                    data-sale_total = "<?=$data->sale_total?>"
+                    data-sale_total = "<?=number_format($data->sale_total)?>"
                     data-sale_diskon = "<?=$data->sale_diskon?>"
-                    data-sale_finaltotal = "<?=$data->sale_finaltotal?>"
+                    data-sale_finaltotal = "<?=number_format($data->sale_finaltotal)?>"
+                    data-user_nama = "<?=$data->user_nama?>"
                     data-customer_nama = "<?=$data->customer_nama == null ? 'Umum' : $data->customer_nama ?>"
                   >
                     <i class="fas fa-eye"></i>
                   </button>
-                  <button type="button" class="btn btn-sm btn-danger tmb-hapus" id="<?=$data->sale_id?>" data-sale_invoice="<?=$data->sale_invoice?>" title="hapus data">
+                  <button type="button" class="btn btn-sm btn-danger tmb_hapus" id="<?=$data->sale_id?>" data-sale_invoice="<?=$data->sale_invoice?>" title="hapus data">
                       <i class="fas fa-trash"></i>
                   </button>
                 </td>
@@ -75,19 +76,19 @@
         <table class="mb-2">
           <tr>
             <td class="pr-2 pb-1">Invoice</td>
-            <td class="pb-1">: <span id="detail_nomor_pjl">PJL20200711001</span></td>
+            <td class="pb-1">: <span id="detail_invoice">PJL20200711001</span></td>
           </tr>
           <tr>
             <td class="pr-2 pb-1">Waktu</td>
-            <td class="pb-1">: <span id="detail_waktu_pjl">15 July 2020 [19:58:43]</span></td>
+            <td class="pb-1">: <span id="detail_tanggal">15 July 2020 [19:58:43]</span></td>
           </tr>
           <tr>
             <td class="pr-2 pb-1">Customer</td>
-            <td class="pb-1">: <span id="detail_nama_pgw">Amal Setiawan</span></td>
+            <td class="pb-1">: <span id="detail_customer">Amal Setiawan</span></td>
           </tr>
           <tr>
             <td class="pr-2 pb-1">Pegawai</td>
-            <td class="pb-1">: <span id="detail_nama_pgw">Faizal Nur Abidin</span></td>
+            <td class="pb-1">: <span id="detail_user">Faizal Nur Abidin</span></td>
           </tr>
         </table>
         <table class="table table-bordered">
@@ -110,15 +111,15 @@
           <tfoot>
             <tr>
               <td colspan="3" align="right">Subtotal</td>
-              <td>Rp<span id="detail_total_pjl">11,500</span></td>
+              <td>Rp<span id="detail_total">11,500</span></td>
             </tr>
             <tr>
               <td colspan="3" align="right">Diskon</td>
-              <td><span id="detail_total_pjl">0</span> %</td>
+              <td><span id="detail_diskon">0</span> %</td>
             </tr>
             <tr style="font-weight: bold;">
               <td colspan="3" align="right">Total Akhir</td>
-              <td>Rp<span id="detail_total_pjl">11,500</span></td>
+              <td>Rp<span id="detail_finaltotal">11,500</span></td>
             </tr>
           </tfoot>
         </table>
@@ -129,3 +130,81 @@
     </div>
   </div>
 </div>
+
+<script>
+	$(".tmb_detail").click(function() {
+		var sale_invoice = $(this).data('sale_invoice');
+		var sale_tanggal = $(this).data('sale_tanggal');
+		var customer_nama = $(this).data('customer_nama');
+		var user_nama = $(this).data('user_nama');
+		var sale_total = $(this).data('sale_total');
+		var sale_diskon = $(this).data('sale_diskon');
+		var sale_finaltotal = $(this).data('sale_finaltotal');
+
+		$("#detail_invoice").text(sale_invoice);
+		$("#detail_tanggal").text(sale_tanggal);
+		$("#detail_customer").text(customer_nama);
+		$("#detail_user").text(user_nama);
+		$("#detail_total").text(sale_total);
+		$("#detail_diskon").text(sale_diskon);
+		$("#detail_finaltotal").text(sale_finaltotal);
+
+		$.ajax({
+      method: "POST",
+      url: "detail_transaksi",
+      data: "sale_invoice="+sale_invoice,
+      success: function(hasil) {
+        var objData = JSON.parse(hasil);
+        // console.log(objData);
+        $("#isi_detail_pjl").html("");
+        $.each(objData, function(key,val){
+          var baris_baru = '';
+          baris_baru += '<tr>';
+          baris_baru +=   '<td>'+val.item_nama+'</td>';
+          baris_baru +=   '<td>Rp '+val.sale_detail_harga+'</td>';
+          baris_baru +=   '<td>'+val.sale_detail_qty+'</td>';
+          baris_baru +=   '<td>Rp '+val.sale_detail_total+'</td>';
+          baris_baru += '</tr>';
+
+          $("#isi_detail_pjl").append(baris_baru);
+        })
+      }
+    })
+	})
+
+	$(".tmb_hapus").click(function() {
+		var sale_id = $(this).attr('id');
+		var sale_invoice = $(this).data('sale_invoice');
+		Swal.fire({
+      title: 'Peringatan',
+      text: 'Data yang telah dihapus tidak dapat dipulihkan kembali, anda yakin menghapus riwayat transaksi ini?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Hapus',
+      cancelButtonText: 'Batal'
+    }).then((ok) => {
+      if (ok.value) {
+        $.ajax({
+          type: "POST",
+          url: "delete_transaksi",
+          data: "sale_id="+sale_id+"&sale_invoice="+sale_invoice,
+          success: function(hasil) {
+            Swal.fire({
+              title: 'Berhasil',
+              text: 'Data Berhasil Dihapus',
+              type: 'success',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'OK'
+            }).then((ok) => {
+              if (ok.value) {
+                location.reload();
+              }
+            })
+          }
+        })
+      }
+    })
+	})
+</script>
